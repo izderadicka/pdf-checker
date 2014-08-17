@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%block title%}Check Result{%endblock%}
+{% block content %}
+<h1>Check result for {{fname}}</h1>
+<pre>
+{{result}}
+</pre>
+<div class="backNavi"><a href="{{url_for('root')}}">GO BACK</a></div>
+{% endblock %}
