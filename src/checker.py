@@ -99,7 +99,7 @@ class PdfMinerWrapper(object):
     
     def _parse_pages(self):
         rsrcmgr = PDFResourceManager()
-        laparams = LAParams()
+        laparams = LAParams(char_margin=2.5)
         device = PDFPageAggregator(rsrcmgr, laparams=laparams)
         interpreter = PDFPageInterpreter(rsrcmgr, device)
     
