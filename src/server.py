@@ -5,7 +5,7 @@ Created on Aug 15, 2014
 @author: ivan
 '''
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, url_for, send_from_directory
 from werkzeug.exceptions import BadRequest  # @UnresolvedImport
 import os.path
 import tempfile
@@ -42,10 +42,13 @@ def upload():
             f.save(tfile)
             tfile.close()
             res=run_checker( tfile.name)
-            os.remove(tfile.name)
+            tmp_file = os.path.split(tfile.name)[1]
+            doc_url=url_for('files', filename=tmp_file)
+            #os.remove(tfile.name)
             return render_template('result.html', 
                         result=res,
-                        fname=f.filename)
+                        fname=f.filename,
+                        doc_url=doc_url)
         else:
             raise BadRequest('Not a PDF file!')
     else:
@@ -54,12 +57,16 @@ def upload():
             
              
 def run_checker(fname):
-    p=subprocess.Popen(['python', 'checker.py', fname], stdout=subprocess.PIPE, stderr= subprocess.PIPE)     
+    p=subprocess.Popen(['python', 'checker.py', '--json', fname], stdout=subprocess.PIPE, stderr= subprocess.PIPE)     
     result, err=p.communicate()
     if err:
         return err
     return result
-        
+
+@app.route('/files/<filename>')
+def files(filename):
+    return send_from_directory(TMP_DIR,
+                               filename)        
           
 
 if __name__ == "__main__":

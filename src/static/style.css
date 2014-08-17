@@ -1,0 +1,57 @@
+
+html {
+    font-family: sans-serif,Arial;
+}
+#results {
+    float: right;
+    width: 500px;
+}
+div.backNavi {
+    clear: both;
+    margin-top: 1em;
+}
+#pdf-viewer {
+    float: left;
+    margin-bottom: 1em;
+    max-width: 800px;
+}
+#content {
+    min-height: 100px;
+}
+#footer {
+    clear: both;
+    margin-top: 1em;
+    color: grey;
+}
+.check-result {
+    font-weight: bold;
+    margin-left: 1em;
+}
+.check-result.failed {
+    color: red;
+}
+#results li.selected {
+    background: none repeat scroll 0 0 #90da60;
+}
+#results ul {
+    list-style: none outside none;
+    padding-left: 1em;
+}
+#results ul li {
+    margin: 0.3em 0;
+    cursor:pointer;
+}
+span.pos .page:before {
+    content: "Pg.";
+}
+span.pos {
+    font-weight: bold;
+    margin-right: 1em;
+}
+span.pos .top:after {
+    content: "%";
+}
+span.pos .top:before {
+    content: ":";
+    margin: 0 2px;
+}

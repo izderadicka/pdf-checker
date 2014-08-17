@@ -1,9 +1,46 @@
 {% extends "base.html" %}
+ {%block extra_head%}
+ <script src="{{ url_for('static', filename='result.js') }}"></script>
+ <script src="{{ url_for('static', filename='pdf/build/pdf.js') }}"></script>
+ <script>
+ var pdfUrl="{{doc_url|safe}}";
+ 
+ var checkResult = {{result|safe}};
+ </script>
+ {%endblock%}
 {%block title%}Check Result{%endblock%}
 {% block content %}
 <h1>Check result for {{fname}}</h1>
-<pre>
-{{result}}
-</pre>
+<div id="pdf-viewer">
+<div class="viewer-header">
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+    &nbsp; &nbsp;
+    <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+</div>
+
+<div>
+    <canvas id="the-canvas" style="border:1px solid black"></canvas>
+</div>
+
+</div>
+<div id="results">
+<div id="checks">
+<h2>Checks performed:</h2>
+<ul>
+<li id="all-checks">All Checks</li>
+<li>
+<ul id="checks-list">
+</ul>
+</li>
+</ul>
+</div>
+<div id="errors">
+<h2>Errors found:</h2>
+<ul id="errors-list">
+</ul>
+</div>
+
+</div>
 <div class="backNavi"><a href="{{url_for('root')}}">GO BACK</a></div>
 {% endblock %}

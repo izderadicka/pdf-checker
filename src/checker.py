@@ -134,7 +134,7 @@ def process_doc(doc_name, strategies):
             tbs.sort(cmp=compareBoxes)
             for line in tbs:
                 texts= filter(lambda t:t.text.strip(), map(lambda obj: TextLine(obj.get_text().strip(), page.pageid, 
-                    _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), line.bbox), line))
+                    _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), obj.bbox), line))
                 for t in texts:
                     for s in strategies:
                         s.feed(t)
