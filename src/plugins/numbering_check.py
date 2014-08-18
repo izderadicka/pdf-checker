@@ -1,3 +1,4 @@
+# coding=utf-8
 '''
 Created on Aug 17, 2014
 
@@ -9,6 +10,11 @@ from common import CheckStrategy
 
 class NumberingCheck(CheckStrategy):
     name="Numbering Check"
+    section_headers=[u"License Definitions and Rules",
+                     u"Lizenzdefinitionen und Regeln",
+                     u"Définitions Licence et Règles Tarifaires",
+                     u"Definicje i zasady udzielania licencji",
+                     u"Licencne definicije i pravila"]
     def __init__(self, max_left=10,
                  l1_re=r'^([A-Z])\.\s+.{3,}',
                  l2_re=r'^(\d+)\.\s+.{3,}',
@@ -42,8 +48,15 @@ class NumberingCheck(CheckStrategy):
         return self._next_item(r, level, lambda curr: chr(ord(curr)+1))
     def _next_number(self,r,level):
         return self._next_item(r, level, lambda curr: str(int(curr)+1))
-        
+    def _is_new_section(self, text):
+        for h in self.section_headers:
+            if re.search(u'^'+h, text, re.UNICODE|re.IGNORECASE):
+                return True    
     def feed(self, txt):
+        if self._is_new_section(txt.text):
+            self.l1=None
+            self.l2=None
+            self.l3=None
         if txt.left <= self.max_left:
             l3=self.l3_re.match(txt.text)
             if l3:

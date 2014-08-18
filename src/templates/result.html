@@ -11,6 +11,13 @@
 {%block title%}Check Result{%endblock%}
 {% block content %}
 <h1>Check result for {{fname}}</h1>
+{% if error %}
+<div>
+<h2>Application Error</h2>
+<p>Application experienced an internal error, please pass information below to its maintainer</p>
+<pre>{{error}}</pre>
+</div>
+{% else %}
 <div id="pdf-viewer">
 <div class="viewer-header">
     <button id="prev">Previous</button>
@@ -40,7 +47,7 @@
 <ul id="errors-list">
 </ul>
 </div>
-
+{%endif%}
 </div>
 <div class="backNavi"><a href="{{url_for('root')}}">GO BACK</a></div>
 {% endblock %}

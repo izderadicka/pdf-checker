@@ -41,14 +41,15 @@ def upload():
             tfile=tempfile.NamedTemporaryFile(suffix=".pdf", delete=False, dir=TMP_DIR)
             f.save(tfile)
             tfile.close()
-            res=run_checker( tfile.name)
+            res,err=run_checker( tfile.name)
             tmp_file = os.path.split(tfile.name)[1]
             doc_url=url_for('files', filename=tmp_file)
             #os.remove(tfile.name)
             return render_template('result.html', 
                         result=res,
                         fname=f.filename,
-                        doc_url=doc_url)
+                        doc_url=doc_url,
+                        error=err)
         else:
             raise BadRequest('Not a PDF file!')
     else:
@@ -59,9 +60,8 @@ def upload():
 def run_checker(fname):
     p=subprocess.Popen(['python', 'checker.py', '--json', fname], stdout=subprocess.PIPE, stderr= subprocess.PIPE)     
     result, err=p.communicate()
-    if err:
-        return err
-    return result
+    
+    return result, err
 
 @app.route('/files/<filename>')
 def files(filename):
