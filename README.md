@@ -14,6 +14,21 @@ A checker reports back errors together with their position in document (page ,% 
 
 PDF Checker has command line interface (checker.py) or web based user interface (server.py) - which also displays PDF document and highlights errors on the document.
 
+Install (on Debian Wheezy)
+--------------------------
+'''
+apt-get install build-essential python python-dev git python-pip uwsgi uwsgi-plugin-python nginx-full 
+cd /opt
+git clone https://github.com/izderadicka/pdf-checker.git checker
+cd checker
+pip  install -r requirements.pip
+cp checker-uwsgi.ini /etc/uwsgi/apps-available/
+ln -s /etc/uwsgi/apps-available/checker-uwsgi.ini /etc/uwsgi/apps-enabled
+/etc/init.d/uwsgi restart
+cp checker-nginx /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/checker-nginx  /etc/nginx/sites-enabled
+/etc/init.d/nginx restart
+'''
 
 License
 -------
