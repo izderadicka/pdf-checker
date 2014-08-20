@@ -15,6 +15,7 @@ from datetime import timedelta
 
 
 app= Flask(__name__)
+#app.debug = True
 app.secret_key = os.urandom(24)
 
 #app.permanent_session_lifetime = timedelta(seconds=60)
