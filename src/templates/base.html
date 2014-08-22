@@ -9,11 +9,13 @@
     {% endblock %}
   </head>
   <body>
+    <div id="main">
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
       {% block footer %}
-      PDF Checker - alpha
+      PDF Checker - v.{{version}}
       {% endblock %}
+    </div>
     </div>
   </body>
 </html>

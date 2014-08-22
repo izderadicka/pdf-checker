@@ -147,7 +147,7 @@ $(function() {
     	box.addClass('selected');
     	if (problem) {
     	pageNum=problem.page;
-    	errorHighlight={page:problem.page, bbox:problem.bbox};
+    	errorHighlight={page:problem.page, bbox:problem.bbox, top:problem.top};
     	queueRenderPage(problem.page);
     	
     	} else {
@@ -171,6 +171,9 @@ $(function() {
     		w = (e.bbox[2] - e.bbox[0]) * scale,
     		h = (e.bbox[1]-e.bbox[3]) * scale;
     		ctx.strokeRect(x,y, w, h);
+    		
+    		var scrollTo = height * e.top / 100.0 - 30;
+    		$('#page-area').scrollTop(scrollTo);
     		
     	}
     }

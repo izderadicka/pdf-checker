@@ -11,6 +11,7 @@ import os.path
 import tempfile
 import subprocess
 from datetime import timedelta
+from _version import __version__
 
 
 
@@ -24,6 +25,9 @@ TMP_DIR='/tmp/pdf-checker-tmp'
 if not os.path.exists(TMP_DIR):
     os.mkdir(TMP_DIR)
 
+@app.context_processor
+def inject_version():
+    return {'version':__version__}
 
 
 @app.route("/")

@@ -1,6 +1,25 @@
 
 html {
     font-family: sans-serif,Arial;
+    height: 100%;
+}
+#page-area {
+    height: 97%;
+    overflow: auto;
+    width: 102%;
+    height: calc(100% - 20px);
+    width: calc(100% + 15px);
+}
+body {
+    height: 100%;
+    margin: 0 8px;
+}
+#content h1 {
+    padding-top: 8px;
+    margin-top: 0;
+}
+#main {
+    height: 100%;
 }
 #results {
     float: right;
@@ -14,14 +33,18 @@ div.backNavi {
     float: left;
     margin-bottom: 1em;
     max-width: 800px;
+    height: 86%;
+    height: calc(100% - 94px);
 }
 #content {
+    height: 93%;
     min-height: 100px;
+    height: calc(100% - 40px);
 }
 #footer {
     clear: both;
-    margin-top: 1em;
     color: grey;
+    margin-top: 1em;
 }
 .check-result {
     font-weight: bold;
@@ -38,8 +61,8 @@ div.backNavi {
     padding-left: 1em;
 }
 #results ul li {
+    cursor: pointer;
     margin: 0.3em 0;
-    cursor:pointer;
 }
 span.pos .page:before {
     content: "Pg.";
