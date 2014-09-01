@@ -61,15 +61,27 @@ class PrintBoxes():
         
 
 class TextLine(object):
-    def __init__(self, text, page_no, left, top, bbox):
+    def __init__(self, text, page_no, left, top, bbox, height, width, chars):
         self.text=text
         self.page_no=int(page_no)
         self.left=left
         self.top=top
         self.bbox=bbox
+        self.height=height
+        self.width=width
+        assert len(text) <= len(chars)
+        self.chars=chars
+        
+        
+    def font_at(self, idx):
+        return self.chars[idx].fontname
+    
+    def size_at(self, idx):
+        return self.chars[idx].size
+        
         
     def __unicode__(self):
-        return u"[pg:{0.page_no}, top:{0.top:0.0f}%, left:{0.left:0.0f}%, bbox:{0.bbox}] {0.text}".format(self)
+        return u"[pg:{0.page_no}, top:{0.top:0.0f}%, left:{0.left:0.0f}%, height:{0.height}, bbox:{0.bbox}] {0.text}".format(self)
         
     def __str__(self):
         return self.__unicode__()
@@ -134,7 +146,8 @@ def process_doc(doc_name, strategies):
             tbs.sort(cmp=compareBoxes)
             for line in tbs:
                 texts= filter(lambda t:t.text.strip(), map(lambda obj: TextLine(obj.get_text().strip(), page.pageid, 
-                    _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), obj.bbox), line))
+                    _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), 
+                    obj.bbox, obj.height, obj.width, list(obj)), line))
                 for t in texts:
                     for s in strategies:
                         s.feed(t)

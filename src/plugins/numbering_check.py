@@ -19,7 +19,8 @@ class NumberingCheck(CheckStrategy):
                  l1_re=r'^([A-Z])\.\s+.{3,}',
                  l2_re=r'^(\d+)\.\s+.{3,}',
                  l3_re=r'^([a-z])\.\s+.{3,}',
-                 start_values=['A','1', 'a']):
+                 start_values=['A','1', 'a'],
+                 min_font_size=[8,8,0]):
         super(NumberingCheck,self).__init__()
         self.max_left=max_left
         self.l1_re=re.compile(l1_re)
@@ -29,6 +30,7 @@ class NumberingCheck(CheckStrategy):
         self.l2=None
         self.l3=None
         self.start_values=start_values
+        self.min_font_size=min_font_size
     
     def _add_error(self, level, curr, next, txt):
         self.results.add_problem("Level %d wrong numbering, is %s, but should be %s" %
@@ -51,7 +53,9 @@ class NumberingCheck(CheckStrategy):
     def _is_new_section(self, text):
         for h in self.section_headers:
             if re.search(u'^'+h, text, re.UNICODE|re.IGNORECASE):
-                return True    
+                return True   
+    def _has_min_size(self,txt, level): 
+        return txt.size_at(0)>= self.min_font_size[level-1]
     def feed(self, txt):
         if self._is_new_section(txt.text):
             self.l1=None
@@ -59,20 +63,20 @@ class NumberingCheck(CheckStrategy):
             self.l3=None
         if txt.left <= self.max_left:
             l3=self.l3_re.match(txt.text)
-            if l3:
+            if l3 and self._has_min_size(txt, 3):
                 ok,curr,next = self._next_letter(l3,3)
                 if not ok:
                     self._add_error(3, curr, next, txt)
             else:
                 l2=self.l2_re.match(txt.text)
-                if l2:
+                if l2 and self._has_min_size(txt, 2):
                     ok,curr,next = self._next_number(l2,2)
                     if not ok:
                         self._add_error(2, curr, next, txt)
                     self.l3=None
                 else:
                     l1=self.l1_re.match(txt.text)
-                    if l1:
+                    if l1 and self._has_min_size(txt, 1):
                         ok,curr,next = self._next_letter(l1,1)
                         if not ok:
                             self._add_error(1, curr, next, txt)
