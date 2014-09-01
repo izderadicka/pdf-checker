@@ -28,6 +28,10 @@ server {
 		uwsgi_pass unix:/tmp/checker.uwsgi;
 	}
 
+	location /files/ {
+		alias /tmp/pdf-checker-tmp/;
+	}
+
 }
 
 
