@@ -33,7 +33,7 @@ class NumberingCheck(CheckStrategy):
         self.min_font_size=min_font_size
     
     def _add_error(self, level, curr, next, txt):
-        self.results.add_problem("Level %d wrong numbering, is %s, but should be %s" %
+        self.results.add("Level %d wrong numbering, is %s, but should be %s" %
                            (level,curr, next),txt)
         
     def _next_item(self, r, level, next_fn):
@@ -61,7 +61,7 @@ class NumberingCheck(CheckStrategy):
             self.l1=None
             self.l2=None
             self.l3=None
-        if txt.left <= self.max_left:
+        elif txt.left <= self.max_left:
             l3=self.l3_re.match(txt.text)
             if l3 and self._has_min_size(txt, 3):
                 ok,curr,next = self._next_letter(l3,3)

@@ -11,7 +11,7 @@ from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import PDFPageAggregator
-from pdfminer.layout import LAParams, LTTextBox
+from pdfminer.layout import LAParams, LTTextBox,LTChar
 import sys
 import plugins
 import os,os.path
@@ -78,6 +78,11 @@ class TextLine(object):
     
     def size_at(self, idx):
         return self.chars[idx].size
+    
+    def get_bbox(self, start, end):
+        c1 = self.chars[start]
+        c2 = self.chars[end-1]
+        return (c1.x0, c1.y0, c2.x1, c2.y1)
         
         
     def __unicode__(self):
@@ -127,6 +132,9 @@ class PdfMinerWrapper(object):
     def __exit__(self, _type, value, traceback):
         self.fp.close()
         
+def get_line_text(l):
+    return ''.join([ c.get_text()  for c in l if isinstance(c, LTChar)])
+        
 def process_doc(doc_name, strategies):
     def compareBoxes(o1,o2):
         if o1.y0>o2.y0:
@@ -145,9 +153,10 @@ def process_doc(doc_name, strategies):
             tbs= filter(lambda obj:isinstance(obj, LTTextBox), page)
             tbs.sort(cmp=compareBoxes)
             for line in tbs:
-                texts= filter(lambda t:t.text.strip(), map(lambda obj: TextLine(obj.get_text().strip(), page.pageid, 
+                texts= filter(lambda t:t.text, map(lambda obj: TextLine(get_line_text(obj).strip(), page.pageid, 
                     _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), 
-                    obj.bbox, obj.height, obj.width, list(obj)), line))
+                    obj.bbox, obj.height, obj.width, filter(lambda c: isinstance(c, LTChar),obj))
+                    , line))
                 for t in texts:
                     for s in strategies:
                         s.feed(t)

@@ -29,8 +29,12 @@ class Result(object):
         self.for_check=for_check
         self.problems=[]
         
-    def add_problem(self, descr, on):
+    def add(self, descr, on):
         self.problems.append(Problem(descr,on))
+        
+    def add_problem(self, p):
+        self.problems.append(p)
+        
         
     @property
     def failure(self):
