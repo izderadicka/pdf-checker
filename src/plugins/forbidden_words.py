@@ -32,5 +32,5 @@ class ForbiddenWords(CheckStrategy):
                 
     
 def create_instance():
-    return ForbiddenWords(['TBD', 'xx+',])
+    return ForbiddenWords(['TBD', 'xx+', 'Dummy'])
                 

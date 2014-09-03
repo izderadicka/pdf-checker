@@ -72,21 +72,53 @@ class TextLine(object):
         assert len(text) <= len(chars)
         self.chars=chars
         
-        
+    @property
+    def font_size(self):
+        for i in xrange(len(self.chars)):
+            if isinstance(self.chars[i], LTChar):
+                return self.size_at(0)    
+    
     def font_at(self, idx):
         return self.chars[idx].fontname
     
     def size_at(self, idx):
         return self.chars[idx].size
     
+    class Bbox(object):
+        pass
+    
     def get_bbox(self, start, end):
         c1 = self.chars[start]
+        while not hasattr(c1, 'x0') and not hasattr(c1, 'y0'):
+            start-=1
+            c1=TextLine.Bbox()
+           
+            if start<0:
+                c1.x0=self.bbox[0]
+                c1.y0=self.bbob[1]
+            elif isinstance(self.chars[start], LTChar):
+                c=self.chars[start]
+                c1.x0=c.x1
+                c1.y0=c.y0
+            
+        
         c2 = self.chars[end-1]
+        while not hasattr(c2, 'x1') and not hasattr(c2, 'y1'):
+            end+=1
+            c2=TextLine.Bbox()
+            if end >= len(self.chars):
+                c2.x1=self.bbox[2]
+                c2.y1=self.bbox[3]
+            elif isinstance(self.chars[end-1], LTChar):
+                c=self.chars[end-1]
+                c2.x1=c.x0
+                c2.y1=c.y1
+        
         return (c1.x0, c1.y0, c2.x1, c2.y1)
         
         
     def __unicode__(self):
-        return u"[pg:{0.page_no}, top:{0.top:0.0f}%, left:{0.left:0.0f}%, height:{0.height}, bbox:{0.bbox}] {0.text}".format(self)
+        return u"[pg:{0.page_no}, top:{0.top:0.0f}%, left:{0.left:0.0f}%, height:{0.height}, font-size:{0.font_size}] {0.text}".format(self)
         
     def __str__(self):
         return self.__unicode__()
@@ -131,10 +163,7 @@ class PdfMinerWrapper(object):
     
     def __exit__(self, _type, value, traceback):
         self.fp.close()
-        
-def get_line_text(l):
-    return ''.join([ c.get_text()  for c in l if isinstance(c, LTChar)])
-        
+           
 def process_doc(doc_name, strategies):
     def compareBoxes(o1,o2):
         if o1.y0>o2.y0:
@@ -153,9 +182,9 @@ def process_doc(doc_name, strategies):
             tbs= filter(lambda obj:isinstance(obj, LTTextBox), page)
             tbs.sort(cmp=compareBoxes)
             for line in tbs:
-                texts= filter(lambda t:t.text, map(lambda obj: TextLine(get_line_text(obj).strip(), page.pageid, 
+                texts= filter(lambda t:t.text, map(lambda obj: TextLine(obj.get_text().strip(), page.pageid, 
                     _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), 
-                    obj.bbox, obj.height, obj.width, filter(lambda c: isinstance(c, LTChar),obj))
+                    obj.bbox, obj.height, obj.width, filter(lambda c: c.get_text(),obj))
                     , line))
                 for t in texts:
                     for s in strategies:

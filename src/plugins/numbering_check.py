@@ -55,7 +55,7 @@ class NumberingCheck(CheckStrategy):
             if re.search(u'^'+h, text, re.UNICODE|re.IGNORECASE):
                 return True   
     def _has_min_size(self,txt, level): 
-        return txt.size_at(0)>= self.min_font_size[level-1]
+        return txt.font_size>= self.min_font_size[level-1]
     def feed(self, txt):
         if self._is_new_section(txt.text):
             self.l1=None

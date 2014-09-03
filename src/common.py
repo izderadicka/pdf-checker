@@ -12,17 +12,25 @@ class CheckStrategy(object):
     name=""
     def feed(self, txt):
         raise NotImplemented()
+    def prepare_results(self):
+        pass
     def get_results(self):
+        self.prepare_results()
         return self.results
     def change_name(self, new_name):
         self.name=new_name
         self.results.for_check=new_name
 class Problem(object):
-    def __init__(self, descr, on):
+    def __init__(self, descr, on, page=None, top=None, bbox=None):
             self.text=descr
-            self.page=on.page_no
-            self.top=on.top
-            self.bbox=on.bbox
+            if on:
+                self.page=on.page_no
+                self.top=on.top
+                self.bbox=on.bbox
+            else:
+                self.page=page
+                self.top=top
+                self.bbox=bbox
         
 class Result(object):
     def __init__(self, for_check):
@@ -34,6 +42,9 @@ class Result(object):
         
     def add_problem(self, p):
         self.problems.append(p)
+        
+    def add_unplaced(self, desc, page=None, top=None, bbox=None):
+        self.problems.append(Problem(desc, None, page, top, bbox))
         
         
     @property

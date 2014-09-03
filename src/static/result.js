@@ -164,6 +164,7 @@ $(function() {
     function highlightError(width, height, scale) {
     	var e=errorHighlight
     	if ( e && e.page == pageNum) {
+    		if (e.bbox) {
     		var ctx=$('#the-canvas').get(0).getContext('2d');
     		ctx.strokeStyle="#FF0000";
     		var x=e.bbox[0]* scale,
@@ -171,6 +172,7 @@ $(function() {
     		w = (e.bbox[2] - e.bbox[0]) * scale,
     		h = (e.bbox[1]-e.bbox[3]) * scale;
     		ctx.strokeRect(x,y, w, h);
+    		}
     		
     		var scrollTo = height * e.top / 100.0 - 30;
     		$('#page-area').scrollTop(scrollTo);
