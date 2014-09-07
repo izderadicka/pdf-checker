@@ -1,0 +1,12 @@
+{%macro checks_widget(checks, cols) -%}
+<div class="col">
+{% for name, optional in checks %}
+<div class="cb_cell">
+<input autocomplete="off" name="checks" id="check_cd_{{loop.index}}" type="checkbox" value="{{name}}"{% if not optional %} checked="checked" {%endif%}/>
+<label for="check_cd_{{loop.index}}">{{name}}</label></div>
+{%if  not (loop.index % ((loop.length +cols-1) // cols)) and not loop.last and not loop.first%}</div>
+<div class="col">
+{%endif%}
+{% endfor %}
+</div>
+{%- endmacro %}

@@ -78,3 +78,37 @@ span.pos .top:before {
     content: ":";
     margin: 0 2px;
 }
+
+.group-header.collapsed {
+    background: url("/static/img/plus.png") no-repeat;
+    background-size: 24px;
+}
+.group-header {
+    font-size: 1.1em;
+    margin-top: 2em;
+    padding-left: 28px;
+    cursor: pointer;
+}
+.group-header.expanded {
+    background: url('/static/img/minus.png') no-repeat ;
+    background-size: 24px;
+}
+
+.cb_cell.new-row {
+    clear: left;
+}
+
+.cb_cell {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+div.col {
+	width: 300px;
+	padding: 0px 10px;
+	float: left;
+}
+
+.group-body {
+    display: None;
+}

@@ -18,8 +18,9 @@ import os,os.path
 import importlib
 from inspect import isclass
 from common import CheckStrategy
+import time
 
-def load_plugins(filter):
+def load_plugins(filter=None):
     plugs=[]
     path=os.path.split(plugins.__file__)[0]
     for fname in os.listdir(path):
@@ -191,11 +192,12 @@ def process_doc(doc_name, strategies):
                         s.feed(t)
         
 def main():
+    start=time.time()
     parser = argparse.ArgumentParser('Check PDF file')
     parser.add_argument("document", help="PDF document to be analyzed")
     parser.add_argument("--debug", "-d", action="store_true", help="Print debug output of document ")
     parser.add_argument("--json", "-j", action="store_true", help="Output JSON ")
-    parser.add_argument("--check", "-c",nargs="*", help="Checks to perform, can appear several times")
+    parser.add_argument("--check", "-c",action="append", help="Checks to perform, can appear several times")
     args=parser.parse_args()
     strategies=[]
     if args.debug and not args.json:
@@ -213,5 +215,7 @@ def main():
         for s in strategies:
             res= s.get_results()
             sys.stdout.write(unicode(res).encode('utf8'))
+    if args.debug:
+        print 'Finished in %f secs' % (time.time()-start)
 if __name__ == '__main__':
     main()

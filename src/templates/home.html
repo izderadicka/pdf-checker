@@ -1,11 +1,35 @@
 {% extends "base.html" %}
+{% from 'forms.html' import checks_widget %}
 {%block title%}PDF Checker{%endblock%}
+{%block extra_head%}
+<script>
+$(function() {
+$h=$('.group-header');
+$h.click(function(evt) {
+	if ($h.hasClass('collapsed')) {
+		$h.removeClass('collapsed').addClass('expanded');
+		$('.group-body').show();
+	} else {
+		$h.removeClass('expanded').addClass('collapsed');
+		$('.group-body').hide();
+	}
+});
+});
+</script>
+{%endblock%}
 {% block content %}
 <h1>Upload your PDF file</h1>
 <div class="uploadForm">
  <form action="/upload" method="POST" enctype="multipart/form-data">
  <input type="file" name="file">
   <input type="submit" value="Upload and Check">
+  
+  <div>
+ <h2 class="group-header collapsed">Modify applied checks</h2>
+ <div class="group-body">
+ {{checks_widget(checks, 3)}}
+ </div>
+ </div>
  </form>
 </div>
 {% endblock %}
