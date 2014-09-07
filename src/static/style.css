@@ -80,7 +80,7 @@ span.pos .top:before {
 }
 
 .group-header.collapsed {
-    background: url("/static/img/plus.png") no-repeat;
+    background: url("/static/img/plus.png") no-repeat  0px -2px ;
     background-size: 24px;
 }
 .group-header {
@@ -90,7 +90,7 @@ span.pos .top:before {
     cursor: pointer;
 }
 .group-header.expanded {
-    background: url('/static/img/minus.png') no-repeat ;
+    background: url('/static/img/minus.png') no-repeat  0px -2px ;
     background-size: 24px;
 }
 
