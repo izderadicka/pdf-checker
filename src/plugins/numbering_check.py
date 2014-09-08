@@ -14,8 +14,9 @@ class NumberingCheck(CheckStrategy):
                      u"Lizenzdefinitionen und Regeln",
                      u"Définitions Licence et Règles Tarifaires",
                      u"Definicje i zasady udzielania licencji",
-                     u"Licencne definicije i pravila"]
-    def __init__(self, max_left=10,
+                     u"Licencne definicije i pravila",
+                     u"Definiciones y reglas de licenciamiento"]
+    def __init__(self, max_left=15,
                  l1_re=r'^([A-Z])\.\s+.{3,}',
                  l2_re=r'^(\d+)\.\s+.{3,}',
                  l3_re=r'^([a-z])\.\s+.{3,}',

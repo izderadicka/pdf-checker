@@ -31,7 +31,7 @@ class FooterCheck(CheckStrategy):
     FOOTER_MAX=4
     PAGE_FOOTER=0
     PG_RE=re.compile(r'^\w+\s+(\d+)\s+\w+\s+(\d+)$', re.UNICODE)  
-    QUOTE_RE=re.compile(r'^[\d]+\s*-\s*[\d]+$', re.UNICODE)
+    QUOTE_RE=re.compile(u'^[\\d]+\\s*[-\u2010\u2011\u2012\u2013\u2014\u2015]\\s*[\\d]+$', re.UNICODE)
     def prepare_results(self):
         pg_count=self._curr_page
         for i in xrange(len(self.footers)):
