@@ -112,3 +112,7 @@ div.col {
 .group-body {
     display: None;
 }
+
+#errors {
+	display:none
+}

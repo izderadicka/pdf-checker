@@ -135,6 +135,11 @@ $(function() {
     		$item.data('problem', p);
     		$('#errors-list').append($item);
     	};
+    	if (problems.length) {
+    		$('#errors').show()
+    	} else {
+    		$('#errors').hide()
+    	}
     	var firstError=$('#errors-list li:first');
     	if (pdfDoc) selectError(firstError);
     	
