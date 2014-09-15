@@ -26,7 +26,7 @@ class ForbiddenWords(CheckStrategy):
         for i,w in enumerate(self._res):
             for m in w.finditer(txt.text):
                 bbox=txt.get_bbox(m.start(), m.end())
-                p=Problem('Found forbidden word %s'%self._words[i], txt)
+                p=Problem('Found forbidden phrase: %s'%self._words[i], txt)
                 p.bbox=bbox
                 self.results.add_problem(p)
                 
