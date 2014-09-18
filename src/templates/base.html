@@ -4,13 +4,24 @@
     {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='jquery-2.1.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='common.js') }}"></script>
     <title>{% block title %}{% endblock %}</title>
     {%block extra_head%}{%endblock%}
     {% endblock %}
   </head>
   <body>
     <div id="main">
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="content">
+    {% block content %}{% endblock %}
+    <div id="dialog">
+    <div class="dialog-inner">
+    <div class="dialog-content"></div>
+    <div class="dialog-buttons">
+    <div class="close-btn">Close</div>
+    </div>
+    </div>
+    </div>
+    </div>
     <div id="footer">
       {% block footer %}
       PDF Checker - v.{{version}}

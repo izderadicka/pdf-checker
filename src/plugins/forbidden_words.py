@@ -32,5 +32,12 @@ class ForbiddenWords(CheckStrategy):
                 
     
 def create_instance():
-    return ForbiddenWords(['TBD', 'xx+', 'Dummy'])
+    i= ForbiddenWords(['TBD', 'xx+', 'Dummy'])
+    i.change_help("""<B>Forbidden Words Check</B><BR>
+<BR>
+We check the "forbidden" words, which should not be on the Ordering document.
+<BR><BR>
+Forbidden words are: <B>XX, XXX, TBD, Dummy</B><BR><BR>)
+""")
+    return i
                 

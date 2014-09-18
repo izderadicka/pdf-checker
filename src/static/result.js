@@ -84,7 +84,7 @@ $(function() {
     	
     	for (var i=0;i<checkResult.length;i++) {
     		var check=checkResult[i],
-    		item= '<li data-check="'+i+'">'+check.check_name;
+    		item= '<li data-check="'+i+'">'+check.check_name +'<span class="check-help" data-check-name="'+check.check_name+'"></span>';
     		if (check.problems.length>0) {
     			item += '<span class="check-result failed">FAILED ('+check.problems.length+')</span>'
     		} else {
@@ -189,8 +189,10 @@ $(function() {
     
     displayChecks();
     selectCheck($('#all-checks'));
-    $('#checks-list').on('click', 'li', function(evt) {
+    $('#checks-list li').click( function(evt) {
+    	if (! $(evt.target).hasClass('check-help')) {
     	selectCheck(this)
+    	}
     });
     $('#all-checks').on('click', function(evt) {
     	selectCheck(this);

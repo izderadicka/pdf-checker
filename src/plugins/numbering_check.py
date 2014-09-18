@@ -10,6 +10,30 @@ from common import CheckStrategy
 
 class NumberingCheck(CheckStrategy):
     name="Numbering Check"
+    help="""<CENTER><B><U>Numbering rules for Licence and Hardware drafting</U></B></CENTER><BR>
+
+Currently we check only first 3 levels <BR>
+
+<I>Note: it's important to maintain indentation from Level 4</I><BR><BR>
+
+<B>A. LEVEL 1 (Article)</B><BR><BR>
+
+<B>1. Level 2 (Section)</B><BR>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra, purus id scelerisque luctus, leo nisi mollis eros, sit amet vehicula libero odio at velit. Sed malesuada metus ut neque egestas dapibus. Aenean mauris tellus, rhoncus non dui ut, finibus ullamcorper purus. In vulputate fermentum vehicula. Suspendisse sed sollicitudin ex. 
+<BR><BR>
+<B>2. Level 2 (Section)</B><BR>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra, purus id scelerisque luctus, leo nisi mollis eros, sit amet vehicula libero odio at velit. Sed malesuada metus ut neque egestas dapibus. Aenean mauris tellus, rhoncus non dui ut, finibus ullamcorper purus. In vulputate fermentum vehicula. Suspendisse sed sollicitudin ex.
+<BR><BR>
+a. Level 3. (No title ) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra, purus id scelerisque luctus, leo nisi mollis eros, sit amet vehicula libero odio at velit. Sed malesuada metus ut neque egestas dapibus. Aenean mauris tellus, rhoncus non dui ut, finibus ullamcorper purus. In vulputate fermentum vehicula. Suspendisse sed sollicitudin ex.
+<BR><BR>
+b. Level 3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pharetra, purus id scelerisque luctus, leo nisi mollis eros, sit amet vehicula libero odio at velit. Sed malesuada metus ut neque egestas dapibus. Aenean mauris tellus, rhoncus non dui ut, finibus ullamcorper purus. In vulputate fermentum vehicula. Suspendisse sed sollicitudin ex.
+<BR><BR>
+   &nbsp&nbsp&nbsp i.  Level 4. Lorem ipsum dolor sit amet, consectetur adipiscing elit.<BR>
+   &nbsp&nbsp&nbsp  ii. Level 4. Lorem ipsum dolor sit amet, consectetur adipiscing elit.<BR><BR>
+
+        &nbsp&nbsp &nbsp&nbsp&nbsp 1) Level 5. Lorem ipsum dolor sit amet, consectetur adipiscing elit.<BR>
+        &nbsp&nbsp &nbsp&nbsp&nbsp 2) Level 5. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+"""
     section_headers=[u"License Definitions and Rules",
                      u"Lizenzdefinitionen und Regeln",
                      u"Définitions Licence et Règles Tarifaires",

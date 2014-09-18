@@ -12,13 +12,14 @@ import tempfile
 import subprocess
 from checker import load_plugins
 from _version import __version__
+from flask import json
+import urllib
 
 def get_checks():
-    cl=[(p.name, hasattr(p,'optional') and p.optional) for p in load_plugins()]
+    cl=[(p.name, hasattr(p,'optional') and p.optional, hasattr(p,'help') and p.help) for p in load_plugins()]
     #cl=[('A'+str(i), bool(i%2)) for i in xrange(13)]
     cl.sort(key=lambda x: x[0])
     return cl
-        
 
 app= Flask(__name__)
 #app.debug = True
@@ -85,7 +86,14 @@ def run_checker(fname, checks=[]):
 def files(filename):
     return send_from_directory(TMP_DIR,
                                filename)        
-          
+@app.route('/help/<check_name>')  
+def help_check(check_name):    
+    for check in app.config['CHECKS']:
+        if urllib.unquote(check_name) == check[0]:
+            return json.jsonify(help=check[2])
+    return json.jsonify(notFound=True, help=None)
+        
+        
 
 if __name__ == "__main__":
     app.run(debug=True,)

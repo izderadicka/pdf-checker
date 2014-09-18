@@ -10,6 +10,7 @@ class CheckStrategy(object):
     def __init__(self):
         self.results=Result(self.name)
     name=""
+    help=""
     def feed(self, txt):
         raise NotImplemented()
     def prepare_results(self):
@@ -20,6 +21,8 @@ class CheckStrategy(object):
     def change_name(self, new_name):
         self.name=new_name
         self.results.for_check=new_name
+    def change_help(self, new_help):
+        self.help=new_help
 class Problem(object):
     def __init__(self, descr, on, page=None, top=None, bbox=None):
             self.text=descr
