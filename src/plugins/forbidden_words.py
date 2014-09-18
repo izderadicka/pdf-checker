@@ -37,7 +37,7 @@ def create_instance():
 <BR>
 We check the "forbidden" words, which should not be on the Ordering document.
 <BR><BR>
-Forbidden words are: <B>XX, XXX, TBD, Dummy</B><BR><BR>)
+Forbidden words are: <B>XX, XXX, TBD, Dummy</B><BR><BR>
 """)
     return i
                 
