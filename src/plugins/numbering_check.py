@@ -81,29 +81,29 @@ b. Level 3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec phare
                 return True   
     def _has_min_size(self,txt, level): 
         return txt.font_size>= self.min_font_size[level-1]
-    def feed(self, txt):
-        if self._is_new_section(txt.text):
+    def feed(self, line):
+        if self._is_new_section(line.text):
             self.l1=None
             self.l2=None
             self.l3=None
-        elif txt.left <= self.max_left:
-            l3=self.l3_re.match(txt.text)
-            if l3 and self._has_min_size(txt, 3):
+        elif line.left <= self.max_left:
+            l3=self.l3_re.match(line.text)
+            if l3 and self._has_min_size(line, 3):
                 ok,curr,next = self._next_letter(l3,3)
                 if not ok:
-                    self._add_error(3, curr, next, txt)
+                    self._add_error(3, curr, next, line)
             else:
-                l2=self.l2_re.match(txt.text)
-                if l2 and self._has_min_size(txt, 2):
+                l2=self.l2_re.match(line.text)
+                if l2 and self._has_min_size(line, 2):
                     ok,curr,next = self._next_number(l2,2)
                     if not ok:
-                        self._add_error(2, curr, next, txt)
+                        self._add_error(2, curr, next, line)
                     self.l3=None
                 else:
-                    l1=self.l1_re.match(txt.text)
-                    if l1 and self._has_min_size(txt, 1):
+                    l1=self.l1_re.match(line.text)
+                    if l1 and self._has_min_size(line, 1):
                         ok,curr,next = self._next_letter(l1,1)
                         if not ok:
-                            self._add_error(1, curr, next, txt)
+                            self._add_error(1, curr, next, line)
                         self.l2=None
                         self.l3=None

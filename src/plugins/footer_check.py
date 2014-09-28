@@ -31,14 +31,14 @@ Example:<BR>
         self.footers=[]
         
         
-    def feed(self, txt):
-        pg=txt.page_no
+    def feed(self, line):
+        pg=line.page_no
         if pg != self._curr_page:
             self.footers.append(deque(maxlen=self.FOOTER_MAX))
             self._curr_page=pg
             
-        if txt.top >= 90.5:
-            self.footers[pg-1].appendleft(txt)
+        if line.top >= 90.5:
+            self.footers[pg-1].appendleft(line)
             
     
     FOOTER_MAX=4

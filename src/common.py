@@ -11,7 +11,7 @@ class CheckStrategy(object):
         self.results=Result(self.name)
     name=""
     help=""
-    def feed(self, txt):
+    def feed(self, line):
         raise NotImplemented()
     def prepare_results(self):
         pass

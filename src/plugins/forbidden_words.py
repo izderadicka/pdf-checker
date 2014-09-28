@@ -22,11 +22,11 @@ class ForbiddenWords(CheckStrategy):
         self._words=terms
         
         
-    def feed(self, txt):
+    def feed(self, line):
         for i,w in enumerate(self._res):
-            for m in w.finditer(txt.text):
-                bbox=txt.get_bbox(m.start(), m.end())
-                p=Problem('Found forbidden phrase: %s'%self._words[i], txt)
+            for m in w.finditer(line.text):
+                bbox=line.get_bbox(m.start(), m.end())
+                p=Problem('Found forbidden phrase: %s'%self._words[i], line)
                 p.bbox=bbox
                 self.results.add_problem(p)
                 

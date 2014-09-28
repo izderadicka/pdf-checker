@@ -54,8 +54,8 @@ class PrintBoxes():
     name="Just Printing"
     def __init__(self):
         self.lines=[]
-    def feed(self, txt):
-        self.lines.append(txt)
+    def feed(self, line):
+        self.lines.append(line)
         
     def get_results(self):
         return u'\n'.join(map(lambda l: unicode(l), self.lines))+u'\n\n'
