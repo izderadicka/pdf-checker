@@ -4,6 +4,8 @@ PDF Checker
 PDF checker is a simple framework to create test/checks of PDF documents for certain text patterns, text organization etc.
 For instance  it can check for "forbidden" words or  it can check that all numbered headings are in order or many other checks.
 
+Check [project page](http://zderadicka.eu/projects/python/pdf-checker/) for details.
+
 How it works
 ------------
 
@@ -16,7 +18,7 @@ PDF Checker has command line interface (checker.py) or web based user interface 
 
 Install (on Debian Wheezy)
 --------------------------
-'''
+```
 apt-get install build-essential python python-dev git python-pip uwsgi uwsgi-plugin-python nginx-full 
 cd /opt
 git clone https://github.com/izderadicka/pdf-checker.git checker
@@ -28,7 +30,7 @@ ln -s /etc/uwsgi/apps-available/checker-uwsgi.ini /etc/uwsgi/apps-enabled
 cp checker-nginx /etc/nginx/sites-available/
 ln -s /etc/nginx/sites-available/checker-nginx  /etc/nginx/sites-enabled
 /etc/init.d/nginx restart
-'''
+```
 
 License
 -------
@@ -45,3 +47,5 @@ History
 -------
 
 v0.1 - initial version - alpha quality
+v0.2 - production version
+v.0.2.1 - small fixes, some more checks
