@@ -14,6 +14,7 @@ from checker import load_plugins
 from _version import __version__
 from flask import json
 import urllib
+import errno
 
 def get_checks():
     cl=[(p.name, hasattr(p,'optional') and p.optional, hasattr(p,'help') and p.help) for p in load_plugins()]
@@ -30,7 +31,14 @@ app.config['CHECKS']=get_checks()
 
 TMP_DIR='/tmp/pdf-checker-tmp'
 if not os.path.exists(TMP_DIR):
-    os.mkdir(TMP_DIR)
+    #FIX-BUG: can cause race condition if running few instances of same server
+    try:
+        os.mkdir(TMP_DIR)
+    except OSError,e:
+        if e.errno == errno.EEXIST:
+            pass # ignore if exixtsOSError
+        else:
+            raise
 
 @app.context_processor
 def inject_version():
