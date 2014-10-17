@@ -113,7 +113,7 @@ div.col {
 }
 
 .group-body {
-    display: None;
+    display: none;
 }
 
 #errors {
@@ -168,4 +168,15 @@ div.col {
     margin: 0px auto;
     cursor:pointer;
     margin-top:5px;
+}
+
+.cb_cell .cats {
+    margin-left:2em;
+    font-style:italic;
+    font-size:80%;
+    color: grey;
+}
+
+.form-label.mandatory {
+    font-weight: bold;
 }

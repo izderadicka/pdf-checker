@@ -11,6 +11,7 @@ from common import CheckStrategy, Problem
 class ForbiddenWords(CheckStrategy):
     name="Forbidden Words Check"
     
+    
     def __init__(self, words):
         super(ForbiddenWords, self).__init__()
         res=[]
@@ -27,13 +28,14 @@ class ForbiddenWords(CheckStrategy):
         for i,w in enumerate(self._res):
             for m in w.finditer(line.text):
                 bbox=line.get_bbox(m.start(), m.end())
-                p=Problem('Found forbidden phrase: %s'%self._words[i], line)
+                p=Problem('Found problematic phrase: %s'%self._words[i], line)
                 p.bbox=bbox
                 self.results.add_problem(p)
                 
     
 def create_instance():
     i= ForbiddenWords(['TBD', 'xx+', 'Dummy'])
+    i.set_categories(['HW', 'License', 'Services'])
     i.change_help("""<B>Forbidden Words Check</B><BR>
 <BR>
 We check the "forbidden" words, which should not be on the Ordering document.

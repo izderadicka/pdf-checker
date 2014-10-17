@@ -11,6 +11,7 @@ from checker import TextLine
 
 class FooterCheck(CheckStrategy):
     name="Page Footer Check"
+    categories = ['HW', 'License']
     help="""<B>Page Footer Check</B><BR>
 <BR>
 

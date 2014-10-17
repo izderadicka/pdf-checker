@@ -15,17 +15,20 @@ from _version import __version__
 from flask import json
 import urllib
 import errno
+import itertools
+from flask.helpers import make_response
 
 def get_checks():
-    cl=[(p.name, hasattr(p,'optional') and p.optional, hasattr(p,'help') and p.help) for p in load_plugins()]
+    cl=[(p.name, p.categories if hasattr(p,'categories') else [], hasattr(p,'help') and p.help) for p in load_plugins()]
     #cl=[('A'+str(i), bool(i%2)) for i in xrange(13)]
     cl.sort(key=lambda x: x[0])
-    return cl
+    cats = sorted(list(set(itertools.chain(*map(lambda c : c[1], cl)))))
+    return cl, cats
 
 app= Flask(__name__)
 #app.debug = True
 app.secret_key = os.urandom(24)
-app.config['CHECKS']=get_checks()
+app.config['CHECKS'], app.config['CATEGORIES']=get_checks()
 
 #app.permanent_session_lifetime = timedelta(seconds=60)
 
@@ -47,7 +50,10 @@ def inject_version():
 
 @app.route("/")
 def root():
-    return render_template('home.html', checks=app.config['CHECKS'])
+    return render_template('home.html', checks=app.config['CHECKS'], 
+        cats2= [(c[0],c[1]) for c in app.config['CHECKS']],
+        categories= app.config['CATEGORIES'],
+        cat=request.cookies.get('category'))
 def is_pdf(f):
     if not f: return False
     ext=os.path.splitext(f.filename)[1]
@@ -62,15 +68,18 @@ def upload():
             f.save(tfile)
             tfile.close()
             checks=request.form.getlist('checks')
+            cat=request.form.get('cat')
             res,err=run_checker( tfile.name, checks)
             tmp_file = os.path.split(tfile.name)[1]
             doc_url=url_for('files', filename=tmp_file)
             #os.remove(tfile.name)
-            return render_template('result.html', 
+            resp = make_response(render_template('result.html', 
                         result=res,
                         fname=f.filename,
                         doc_url=doc_url,
-                        error=err)
+                        error=err))
+            resp.set_cookie('category', cat, max_age=315360000)
+            return resp
         else:
             raise BadRequest('Not a PDF file!')
     else:
@@ -101,7 +110,5 @@ def help_check(check_name):
             return json.jsonify(help=check[2])
     return json.jsonify(notFound=True, help=None)
         
-        
-
 if __name__ == "__main__":
     app.run(debug=True,)

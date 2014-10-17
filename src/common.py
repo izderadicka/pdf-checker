@@ -23,9 +23,8 @@ class CheckStrategy(object):
         self.results.for_check=new_name
     def change_help(self, new_help):
         self.help=new_help
-        
-    def set_optional(self, optional):
-        self.optional = optional
+    def set_categories(self, cats):
+        self.categories = cats
         
 class Problem(object):
     def __init__(self, descr, on, page=None, top=None, bbox=None):

@@ -1,12 +1,26 @@
-{%macro checks_widget(checks, cols) -%}
+{%macro checks_widget(checks, cat, cols) -%}
 <div class="col">
-{% for name, optional,help in checks %}
+{% for name, categories,help in checks %}
 <div class="cb_cell">
-<input autocomplete="off" name="checks" id="check_cd_{{loop.index}}" type="checkbox" value="{{name}}"{% if not optional %} checked="checked" {%endif%}/>
-<label for="check_cd_{{loop.index}}">{{name}}<span class="check-help" data-check-name="{{name}}"></span></label></div>
+<input  name="checks" id="check_cd_{{loop.index}}" type="checkbox" 
+value="{{name}}"{% if cat in categories %} checked="checked"{%endif%}/>
+<label for="check_cd_{{loop.index}}">{{name}}<span class="check-help" data-check-name="{{name}}"></span>
+{% if categories%} <div class="cats">(
+{% for c in categories %}{{c}}{%if not loop.last%}, {%endif%}{%endfor%}
+)</div>{%endif%}
+</label></div>
 {%if  not (loop.index % ((loop.length +cols-1) // cols)) and not loop.last and not loop.first%}</div>
 <div class="col">
 {%endif%}
 {% endfor %}
 </div>
+{%- endmacro %}
+
+{%macro select_widget(name, options, selected) -%}
+<select name="{{name}}">
+<option></option>
+{%for o in options%}
+<option value="{{o}}"{%if o == selected%} selected="selected"{%endif%}>{{o}}</option>
+{%endfor%}
+</select>
 {%- endmacro %}

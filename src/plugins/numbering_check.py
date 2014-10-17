@@ -10,6 +10,7 @@ from common import CheckStrategy
 
 class NumberingCheck(CheckStrategy):
     name="Numbering Check"
+    categories = ['HW', 'License']
     help="""<CENTER><B><U>Numbering rules for Licence and Hardware drafting</U></B></CENTER><BR>
 
 Currently we check only first 3 levels <BR>
