@@ -305,8 +305,6 @@ def create_instance():
     i.set_categories(['Services'])
     i.change_help("""<B>Services Phrases To Avoid</B><BR>
 <BR>
-This check applies to services ODs only.
-<BR>
 Identified phrases should  be avoided in services ODs.
 """)
     return i
