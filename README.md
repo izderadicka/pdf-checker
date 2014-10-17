@@ -50,4 +50,6 @@ v0.1 - initial version - alpha quality
 
 v0.2 - production version
 
-v.0.2.1 - small fixes, some more checks
+v.0.2.1 - small fixes, 
+
+v.0.3 - categories for checks - better UI
