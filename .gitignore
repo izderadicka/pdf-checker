@@ -37,3 +37,4 @@ _$*
 /logs
 /samples
 /src/pdfminer
+/deploy.sh
