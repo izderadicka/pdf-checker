@@ -59,17 +59,24 @@ class PrintBoxes():
         
     def get_results(self):
         return u'\n'.join(map(lambda l: unicode(l), self.lines))+u'\n\n'
-        
 
-class TextLine(object):
-    def __init__(self, text, page_no, left, top, bbox, height, width, chars):
-        self.text=text
+class TextContainer(object):
+    def __init__(self, text, page_no, left, top, bbox, height, width):
+        self.text=text.strip()
         self.page_no=int(page_no)
         self.left=left
         self.top=top
         self.bbox=bbox
         self.height=height
         self.width=width
+        
+class TextPara(TextContainer):
+    pass
+    
+        
+class TextLine(TextContainer):
+    def __init__(self, text, page_no, left, top, bbox, height, width, chars):
+        super(TextLine,self).__init__(text, page_no, left, top, bbox, height, width)
         assert len(text) <= len(chars)
         self.chars=chars
         
@@ -182,11 +189,17 @@ def process_doc(doc_name, strategies):
             
             tbs= filter(lambda obj:isinstance(obj, LTTextBox), page)
             tbs.sort(cmp=compareBoxes)
-            for line in tbs:
-                texts= filter(lambda t:t.text, map(lambda obj: TextLine(obj.get_text().strip(), page.pageid, 
+            for tbox in tbs:
+                if tbox.get_text().strip():
+                    para = TextPara(tbox.get_text(), page.pageid, 
+                        _to_pct(tbox.x0, page.width), _to_pct(page.height-tbox.y0, page.height), 
+                        tbox.bbox, tbox.height, tbox.width )
+                    for s in strategies:
+                        s.feed_para(para)
+                texts= filter(lambda t:t.text, map(lambda obj: TextLine(obj.get_text(), page.pageid, 
                     _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), 
                     obj.bbox, obj.height, obj.width, filter(lambda c: c.get_text(),obj))
-                    , line))
+                    , tbox))
                 for t in texts:
                     for s in strategies:
                         s.feed(t)

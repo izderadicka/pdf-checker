@@ -12,7 +12,9 @@ class CheckStrategy(object):
     name=""
     help=""
     def feed(self, line):
-        raise NotImplemented()
+        pass
+    def feed_para(self, para):
+        pass
     def prepare_results(self):
         pass
     def get_results(self):
