@@ -1,5 +1,7 @@
 $(function() {
-$h=$('.group-header');
+var $h=$('.group-header'),
+form_action = $('form').attr('action');
+
 $h.click(function(evt) {
 	if ($h.hasClass('collapsed')) {
 		$h.removeClass('collapsed').addClass('expanded');
@@ -18,6 +20,8 @@ $('input[type="submit"]').click(function(evt) {
 		alert("No check is selected!");
 		evt.preventDefault();
 	}
+	var f =$('form');
+	f.attr('action',form_action+'#'+ $('select[name="cat"]').val());
 });
 var $cat=$('select[name="cat"]');
 
