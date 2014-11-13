@@ -21,7 +21,7 @@ $('input[type="submit"]').click(function(evt) {
 		evt.preventDefault();
 	}
 	var f =$('form');
-	f.attr('action',form_action+'#'+ $('select[name="cat"]').val());
+	f.attr('action',form_action+'?LOB='+ $('select[name="cat"]').val());
 });
 var $cat=$('select[name="cat"]');
 
