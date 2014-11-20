@@ -187,8 +187,7 @@ def process_doc(doc_name, strategies):
         else:
             return 0
     with PdfMinerWrapper(doc_name) as doc:
-        for page in doc:
-            
+        for page in doc:           
             tbs= filter(lambda obj:isinstance(obj, LTTextBox), page)
             tbs.sort(cmp=compareBoxes)
             for tbox in tbs:
