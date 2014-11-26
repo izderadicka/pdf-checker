@@ -24,7 +24,12 @@
     </div>
     <div id="footer">
       {% block footer %}
-      PDF Checker - v.{{version}}
+      PDF Checker - v.{{version}} 
+      <span class="user_block">
+      {% if current_user.is_authenticated() %}
+  		&lt;{{ current_user.id }}&gt; <a href="{{url_for('access.logoff')}}">[log off]</a>
+			{% endif %}
+      </span>
       {% endblock %}
     </div>
     </div>

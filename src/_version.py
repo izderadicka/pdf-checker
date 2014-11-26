@@ -4,4 +4,4 @@ Created on Aug 22, 2014
 @author: ivan
 '''
 
-__version__='0.3.2'
+__version__='0.3.3-with-login'

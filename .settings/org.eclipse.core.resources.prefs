@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
 encoding//lib/python2.7/site-packages/flask/__init__.py=utf-8
+encoding//lib/python2.7/site-packages/flask/app.py=utf-8
+encoding//lib/python2.7/site-packages/flask/helpers.py=utf-8
+encoding//lib/python2.7/site-packages/flask_login.py=utf-8
 encoding//src/plugins/_sample_forbidden_phrases.py=utf-8
 encoding//src/plugins/services_carefully.py=utf-8
 encoding//src/plugins/services_sensitive.py=utf-8

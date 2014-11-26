@@ -17,6 +17,9 @@ import urllib
 import errno
 import itertools
 from flask.helpers import make_response
+from flask_login import login_required
+from access import register_with_app
+
 
 def get_checks():
     cl=[(p.name, p.categories if hasattr(p,'categories') else [], hasattr(p,'help') and p.help) for p in load_plugins()]
@@ -30,7 +33,7 @@ app= Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['CHECKS'], app.config['CATEGORIES']=get_checks()
 
-#app.permanent_session_lifetime = timedelta(seconds=60)
+register_with_app(app, 'root')
 
 TMP_DIR='/tmp/pdf-checker-tmp'
 if not os.path.exists(TMP_DIR):
@@ -47,8 +50,8 @@ if not os.path.exists(TMP_DIR):
 def inject_version():
     return {'version':__version__}
 
-
 @app.route("/")
+@login_required
 def root():
     return render_template('home.html', checks=app.config['CHECKS'], 
         cats2= [(c[0],c[1]) for c in app.config['CHECKS']],
@@ -60,6 +63,7 @@ def is_pdf(f):
     return ext.lower() == '.pdf'
 
 @app.route("/upload", methods=["POST"])
+@login_required
 def upload():
     if request.method == 'POST':  # @UndefinedVariable
         f = request.files['file']  # @UndefinedVariable
@@ -104,11 +108,12 @@ def files(filename):
     return send_from_directory(TMP_DIR,
                                filename)        
 @app.route('/help/<check_name>')  
+@login_required
 def help_check(check_name):    
     for check in app.config['CHECKS']:
         if urllib.unquote(check_name) == check[0]:
             return json.jsonify(help=check[2])
     return json.jsonify(notFound=True, help=None)
-        
+
 if __name__ == "__main__":
     app.run(debug=True,)
