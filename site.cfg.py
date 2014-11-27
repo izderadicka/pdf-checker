@@ -3,6 +3,10 @@ Created on Nov 27, 2014
 
 @author: ivan
 '''
+#set these to provide correct SP metadata
+SERVER_NAME='localhost:5000'
+PREFERRED_URL_SCHEME="http"
+base_url="%s://%s"%(PREFERRED_URL_SCHEME,SERVER_NAME)
 
 # AUTH_PWD_FORM="PWD_FORM"
 # AUTH_SAML="SAML"
@@ -12,22 +16,21 @@ AUTHENTICATION_TYPE="SAML"
 SAML_UID_ATTRIBUTE = "uid"
 
 
-# meta for this SP, can use {} to replace base URL
+# meta for this SP, 
 SAML_META_SP = {
-        "entityId": "http://localhost:5000/access/saml/metadata/",
+        "entityId": "%s/access/saml/metadata/"%base_url,
         "assertionConsumerService": {
-            "url": "http://localhost:5000/access/saml/sso/acs",
+            "url": "%s/access/saml/sso/acs"%base_url,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
         },
         "singleLogoutService": {
-            "url": "http://localhost:5000/access/saml/sso/sls",
+            "url": "%s/access/saml/sso/sls"%base_url,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
         },
         "NameIDFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
         "x509cert": "",
         "privateKey": ""
     }
-
 #meta for IDP
 SAML_META_IDP = {
         "entityId": "https://localhost:8080/simplesaml/saml2/idp/metadata.php",
