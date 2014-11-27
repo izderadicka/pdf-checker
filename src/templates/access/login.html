@@ -4,7 +4,7 @@
 <h1>Please Login</h1>
 <div class="login-form">
 {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
+    <div class="flash">{{ message }}</div>
   {% endfor %}
  {% if current_user.is_authenticated() %}
  <p> You are already logged in, <a href="{{url_for('access.logoff')}}">log off</a>.</p>

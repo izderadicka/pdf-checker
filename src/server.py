@@ -19,6 +19,7 @@ import itertools
 from flask.helpers import make_response
 from flask_login import login_required
 from access import register_with_app
+import sys
 
 
 def get_checks():
@@ -32,6 +33,7 @@ app= Flask(__name__)
 #app.debug = True
 app.secret_key = os.urandom(24)
 app.config['CHECKS'], app.config['CATEGORIES']=get_checks()
+app.config.from_pyfile(os.path.join(os.path.dirname(__file__), '../site.cfg.py'))
 
 register_with_app(app, 'root')
 
@@ -116,4 +118,8 @@ def help_check(check_name):
     return json.jsonify(notFound=True, help=None)
 
 if __name__ == "__main__":
-    app.run(debug=True,)
+    dbg=True
+    if len(sys.argv)>1 and sys.argv[1]=='NO_DEBUG':
+        dbg=False
+        
+    app.run(debug=dbg,)
