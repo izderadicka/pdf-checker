@@ -128,7 +128,7 @@ class TextLine(TextContainer):
         
         
     def __unicode__(self):
-        return u"[pg:{0.page_no}, top:{0.top:0.0f}%, left:{0.left:0.0f}%, height:{0.height}, font-size:{0.font_size}] {0.text}".format(self)
+        return u"[pg:{0.page_no}, top:{0.top:0.2f}%, left:{0.left:0.2f}%, height:{0.height:0.2f}, font-size:{0.font_size:0.2f}] {0.text}".format(self)
         
     def __str__(self):
         return self.__unicode__()

@@ -18,7 +18,8 @@ AUTH_SAML="SAML"
 
 AUTHENTICATION_TYPE=AUTH_PWD_FORM
 
-SAML_UID_ATTRIBUTE = "uid"
+SAML_UID_ATTRIBUTE = None
+BASE_SAML_PATH = os.path.dirname(os.path.dirname(__file__))
 
 SAML_CONFIG={}
 
@@ -39,7 +40,7 @@ def register_with_app(app, main_view="root"):
                 raise Exception("Missing key %s in config file"%n)
     global MAIN_VIEW
     MAIN_VIEW=main_view
-    set_globals(app, ['AUTHENTICATION_TYPE', 'SAML_UID_ATTRIBUTE'])
+    set_globals(app, ['AUTHENTICATION_TYPE', 'SAML_UID_ATTRIBUTE', 'BASE_SAML_PATH'])
     SAML_CONFIG.update(app.config['SAML_ADVANCED_CONFIG'])
     SAML_CONFIG['sp'] = app.config['SAML_META_SP']
     SAML_CONFIG['idp'] = app.config['SAML_META_IDP']
@@ -66,7 +67,7 @@ def valid_login(uid, pwd):
     return len(uid)>=5
 
 def init_saml_auth(req):
-    auth = OneLogin_Saml2_Auth(req, SAML_CONFIG)
+    auth = OneLogin_Saml2_Auth(req, SAML_CONFIG,custom_base_path=BASE_SAML_PATH)
     return auth
 
 
@@ -157,13 +158,18 @@ def sso(action):
         errors = auth.get_errors()
         if not auth.is_authenticated():
             errors.append('user not authenticated')
-        uid=auth.get_attribute(SAML_UID_ATTRIBUTE)
-        if not uid:
-            errors.append('uid attribute not found in response')
-        if len(uid)<1:
-            errors.append('uid attribute is empty')
+        if SAML_UID_ATTRIBUTE:
+            uid=auth.get_attribute(SAML_UID_ATTRIBUTE)
+            if not uid:
+                errors.append('uid attribute not found in response')
+            elif len(uid)>1:
+                errors.append('uid attribute has multiple values')
+            else:
+                uid=uid[0]
         else:
-            uid=uid[0]
+            uid=auth.get_nameid()
+            if not uid:
+                errors.append('nameID is not available')
         if len(errors) == 0:
             login_user(User(uid))
             self_url = OneLogin_Saml2_Utils.get_self_url(req)
@@ -183,10 +189,11 @@ def sso(action):
     else:
         return ('Invalid request', 400)
 
-
+    for e in errors:
+        flash(e)
     return render_template(
         'access/sso.html',
-        errors=errors
+        
     )
 
         

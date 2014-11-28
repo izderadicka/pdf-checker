@@ -20,6 +20,8 @@ Install (on Debian Wheezy)
 --------------------------
 ```
 apt-get install build-essential python python-dev git python-pip uwsgi uwsgi-plugin-python nginx-full 
+#Below are dependencies for python-saml - for SSO integration - it's optional if you not using SSO
+apt-get install libxml2-dev libxslt1-dev libxmlsec1-dev swig
 cd /opt
 git clone https://github.com/izderadicka/pdf-checker.git checker
 cd checker

@@ -1,8 +1,4 @@
-'''
-Created on Nov 27, 2014
-
-@author: ivan
-'''
+import os.path
 #set these to provide correct SP metadata
 SERVER_NAME='localhost:5000'
 PREFERRED_URL_SCHEME="http"
@@ -12,10 +8,11 @@ base_url="%s://%s"%(PREFERRED_URL_SCHEME,SERVER_NAME)
 # AUTH_SAML="SAML"
 AUTHENTICATION_TYPE="SAML"
 
-#SAML attribute to use as user ID
-SAML_UID_ATTRIBUTE = "uid"
+#SAML attribute to use as user ID, if None (default) then nameID is used
+SAML_UID_ATTRIBUTE = None
 
-
+#base directory for python-saml -  should contain certs/sp.key and certs/sp.crt
+BASE_SAML_PATH = os.path.dirname(__file__)
 # meta for this SP, 
 SAML_META_SP = {
         "entityId": "%s/access/saml/metadata/"%base_url,
@@ -51,12 +48,12 @@ SAML_ADVANCED_CONFIG = {
     "debug": True,
     "security": {
         "nameIdEncrypted": False,
-        "authnRequestsSigned": False,
+        "authnRequestsSigned": True,
         "logoutRequestSigned": False,
         "logoutResponseSigned": False,
         "signMetadata": False,
         "wantMessagesSigned": False,
-        "wantAssertionsSigned": False,
+        "wantAssertionsSigned": True,
         "wantNameIdEncrypted": False
     },
     "contactPerson": {
