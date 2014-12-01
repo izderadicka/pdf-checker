@@ -76,8 +76,10 @@ SAML_ADVANCED_CONFIG = {
 }
 
 
-SQLALCHEMY_DATABASE_URI = "postgresql://ivan:heslo1@localhost/testbase"
-#"sqlite:///%s/data.db" % os.path.dirname(__file__)
+SQLALCHEMY_DATABASE_URI = "sqlite:///%s/data.db" % os.path.dirname(__file__)
+#"postgresql://user:pwd@localhost/testbase"
+#"oracle://user:pwd@host/sid"
+
 
 
 

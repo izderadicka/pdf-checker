@@ -56,7 +56,7 @@ if app.config.get('SQLALCHEMY_DATABASE_URI'):
         __tablename__='pdf_issue'
         id=db.Column(db.Integer, db.Sequence('pdf_issue_pk_seq'), primary_key=True)
         check_type=db.Column(db.String(200), nullable=False)
-        error_msg=db.Column(db.String)
+        error_msg=db.Column(db.String(1000))
         page_no=db.Column(db.Integer)
         page_top=db.Column(db.Float)
         check_id=db.Column(db.Integer, db.ForeignKey('pdf_check.id'), nullable=False)
