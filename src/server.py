@@ -5,21 +5,23 @@ Created on Aug 15, 2014
 @author: ivan
 '''
 
-from flask import Flask, render_template, request, url_for, send_from_directory
+from flask import Flask, render_template, request, url_for, send_from_directory, redirect
 from werkzeug.exceptions import BadRequest  # @UnresolvedImport
 import os.path
 import tempfile
 import subprocess
 from checker import load_plugins
 from _version import __version__
-from flask import json
 import urllib
 import errno
 import itertools
 from flask.helpers import make_response
 from flask_login import login_required
-from access import register_with_app
+from access import register_with_app, current_user
 import sys
+from flask.ext.sqlalchemy import SQLAlchemy
+from datetime import datetime
+from flask import json
 
 
 def get_checks():
@@ -36,6 +38,30 @@ app.config['CHECKS'], app.config['CATEGORIES']=get_checks()
 app.config.from_pyfile(os.path.join(os.path.dirname(__file__), '../site.cfg.py'))
 
 register_with_app(app, 'root')
+
+db=None
+
+if app.config.get('SQLALCHEMY_DATABASE_URI'):
+
+    db = SQLAlchemy(app)
+    class Check(db.Model):
+        __tablename__ = 'pdf_check'
+        id=db.Column(db.Integer, db.Sequence('pdf_check_pk_seq'), primary_key=True)
+        username=db.Column(db.String(200), nullable=False)
+        filename=db.Column(db.String(200), nullable=False)
+        doc_type=db.Column(db.String(20), nullable=False)
+        checked_on=db.Column(db.DateTime(timezone=True), nullable=False)
+        
+    class Issue(db.Model):
+        __tablename__='pdf_issue'
+        id=db.Column(db.Integer, db.Sequence('pdf_issue_pk_seq'), primary_key=True)
+        check_type=db.Column(db.String(200), nullable=False)
+        error_msg=db.Column(db.String)
+        page_no=db.Column(db.Integer)
+        page_top=db.Column(db.Float)
+        check_id=db.Column(db.Integer, db.ForeignKey('pdf_check.id'), nullable=False)
+        check=db.relationship(Check)#, primaryjoin= check_id == Check.id)
+
 
 TMP_DIR='/tmp/pdf-checker-tmp'
 if not os.path.exists(TMP_DIR):
@@ -59,12 +85,37 @@ def root():
         cats2= [(c[0],c[1]) for c in app.config['CHECKS']],
         categories= app.config['CATEGORIES'],
         cat=request.cookies.get('category'))
+    
 def is_pdf(f):
     if not f: return False
     ext=os.path.splitext(f.filename)[1]
     return ext.lower() == '.pdf'
 
-@app.route("/upload", methods=["POST"])
+def record_result(fname,cat,res):
+    if current_user.is_authenticated():
+        uname=current_user.id
+    else:
+        uname="anonymous"
+        
+    checks=json.loads(res)
+    c=Check(username=uname, 
+            filename=fname,
+            doc_type=cat,
+            checked_on = datetime.now()
+            )
+    db.session.add(c)
+    for check in checks:
+        for p in check['problems']:
+            issue=Issue(check=c, 
+                        check_type=check['check_name'],
+                        error_msg=p['text'],
+                        page_no=p['page'],
+                        page_top=p['top'])
+            db.session.add(issue)
+    
+    db.session.commit()
+
+@app.route("/upload", methods=["GET","POST"])
 @login_required
 def upload():
     if request.method == 'POST':  # @UndefinedVariable
@@ -85,11 +136,16 @@ def upload():
                         doc_url=doc_url,
                         error=err))
             resp.set_cookie('category', cat, max_age=315360000)
+            if db and not err:
+                try:
+                    record_result(f.filename, cat, res)
+                except Exception,e:
+                    app.logger.error('Error when recording results to db: %s',e)
             return resp
         else:
             raise BadRequest('Not a PDF file!')
     else:
-        raise BadRequest('Only POST method allowed')
+        return redirect(url_for('root'))
             
             
              

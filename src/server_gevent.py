@@ -6,6 +6,8 @@ Created on Aug 20, 2014
 '''
 from gevent import monkey
 monkey.patch_all()
+import sqlalchemy_gevent
+sqlalchemy_gevent.patch_all()
 
 from server import app as application
 

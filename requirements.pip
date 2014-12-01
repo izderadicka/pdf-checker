@@ -2,3 +2,4 @@ pdfminer==20140328
 Flask>=0.10.1
 Flask-Login>=0.2.11
 python-saml>=2.0.1
+Flask-SQLAlchemy>=2.0

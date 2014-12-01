@@ -39,3 +39,4 @@ _$*
 /src/pdfminer
 /deploy.sh
 /certs
+/data.db
