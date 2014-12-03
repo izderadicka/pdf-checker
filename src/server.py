@@ -141,6 +141,7 @@ def upload():
                     record_result(f.filename, cat, res)
                 except Exception,e:
                     app.logger.error('Error when recording results to db: %s',e)
+                    import traceback;traceback.print_exc()
             return resp
         else:
             raise BadRequest('Not a PDF file!')
