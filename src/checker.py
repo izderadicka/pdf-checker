@@ -79,7 +79,7 @@ class TextPara(TextContainer):
 class TextLine(TextContainer):
     def __init__(self, text, page_no, left, top, bbox, height, width, chars):
         super(TextLine,self).__init__(text, page_no, left, top, bbox, height, width)
-        assert len(text) <= len(chars)
+        #assert len(text) <= len(chars)
         self.chars=chars
         
     @property
