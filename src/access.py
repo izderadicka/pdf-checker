@@ -175,7 +175,6 @@ def sso(action):
         if not session_index:
             errors.append('session index is not provided')
         else:
-            print "SESSION INDEX is %s" % session_index
             session['SAML_SESSION_INDEX']=session_index
         if len(errors) == 0:
             login_user(User(uid))
