@@ -120,7 +120,8 @@ def logoff():
     elif AUTHENTICATION_TYPE == AUTH_SAML:
         req = prepare_flask_request(request)
         auth = init_saml_auth(req)
-        return redirect(auth.logout())
+        session_index = session.get('SAML_SESSION_INDEX')
+        return redirect(auth.logout(name_id=current_user.get_id(), session_index=session_index))
     else:
         return ('Internal error', 500)
     
@@ -170,6 +171,12 @@ def sso(action):
             uid=auth.get_nameid()
             if not uid:
                 errors.append('nameID is not available')
+        session_index = auth.get_session_index()
+        if not session_index:
+            errors.append('session index is not provided')
+        else:
+            print "SESSION INDEX is %s" % session_index
+            session['SAML_SESSION_INDEX']=session_index
         if len(errors) == 0:
             login_user(User(uid))
             self_url = OneLogin_Saml2_Utils.get_self_url(req)
@@ -178,7 +185,12 @@ def sso(action):
             else: 
                 return redirect(url_for(MAIN_VIEW))
     elif action=='sls':
-        dscb = lambda: logout_user()
+        def dscb ():
+            try:
+                session.pop('SAML_SESSION_INDEX')
+            except KeyError:
+                pass
+            logout_user()
         url = auth.process_slo(delete_session_cb=dscb)
         errors = auth.get_errors()
         if len(errors) == 0:
