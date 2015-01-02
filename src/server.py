@@ -42,21 +42,24 @@ register_with_app(app, 'root')
 db=None
 
 if app.config.get('SQLALCHEMY_DATABASE_URI'):
+    
+    if app.config.get('SQLALCHEMY_DATABASE_URI').startswith("oracle"):
+        os.environ['NLS_LANG']= 'AMERICAN_AMERICA.AL32UTF8'
 
     db = SQLAlchemy(app)
     class Check(db.Model):
         __tablename__ = 'pdf_check'
         id=db.Column(db.Integer, db.Sequence('pdf_check_pk_seq'), primary_key=True)
-        username=db.Column(db.String(200), nullable=False)
-        filename=db.Column(db.String(200), nullable=False)
+        username=db.Column(db.Unicode(200), nullable=False)
+        filename=db.Column(db.Unicode(200), nullable=False)
         doc_type=db.Column(db.String(20), nullable=False)
         checked_on=db.Column(db.DateTime(timezone=True), nullable=False)
         
     class Issue(db.Model):
         __tablename__='pdf_issue'
         id=db.Column(db.Integer, db.Sequence('pdf_issue_pk_seq'), primary_key=True)
-        check_type=db.Column(db.String(200), nullable=False)
-        error_msg=db.Column(db.String(1000))
+        check_type=db.Column(db.Unicode(200), nullable=False)
+        error_msg=db.Column(db.Unicode(1000))
         page_no=db.Column(db.Integer)
         page_top=db.Column(db.Float)
         check_id=db.Column(db.Integer, db.ForeignKey('pdf_check.id'), nullable=False)
