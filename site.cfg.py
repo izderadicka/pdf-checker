@@ -4,6 +4,8 @@ SERVER_NAME='localhost:5000'
 PREFERRED_URL_SCHEME="http"
 base_url="%s://%s"%(PREFERRED_URL_SCHEME,SERVER_NAME)
 
+LOGIN_DISABLED = True
+
 # AUTH_PWD_FORM="PWD_FORM"
 # AUTH_SAML="SAML"
 AUTHENTICATION_TYPE="SAML"
@@ -14,6 +16,7 @@ SAML_UID_ATTRIBUTE = None
 #base directory for python-saml -  should contain certs/sp.key and certs/sp.crt
 BASE_SAML_PATH = os.path.dirname(__file__)
 # meta for this SP, 
+# urn:oasis:names:tc:SAML:2.0:nameid-format:transient
 SAML_META_SP = {
         "entityId": "%s/access/saml/metadata/"%base_url,
         "assertionConsumerService": {
@@ -24,7 +27,7 @@ SAML_META_SP = {
             "url": "%s/access/saml/sso/sls"%base_url,
             "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
         },
-        "NameIDFormat": "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+        "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
         "x509cert": "",
         "privateKey": ""
     }
