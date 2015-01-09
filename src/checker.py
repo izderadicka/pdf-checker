@@ -61,11 +61,18 @@ class PrintBoxes():
         
     def get_results(self):
         return u'\n'.join(map(lambda l: unicode(l), self.lines))+u'\n\n'
+    
+class Pg(object):
+    def __init__(self, page_no, height, width):
+        self.page_no=page_no
+        self.height=height
+        self.width=width
 
 class TextContainer(object):
-    def __init__(self, text, page_no, left, top, bbox, height, width):
+    def __init__(self, text, page_no, pg, left, top, bbox, height, width):
         self.text=text.strip()
         self.page_no=int(page_no)
+        self.pg=pg
         self.left=left
         self.top=top
         self.bbox=bbox
@@ -77,8 +84,8 @@ class TextPara(TextContainer):
     
         
 class TextLine(TextContainer):
-    def __init__(self, text, page_no, left, top, bbox, height, width, chars):
-        super(TextLine,self).__init__(text, page_no, left, top, bbox, height, width)
+    def __init__(self, text, page_no, pg, left, top, bbox, height, width, chars):
+        super(TextLine,self).__init__(text, page_no, pg, left, top, bbox, height, width)
         #assert len(text) <= len(chars)
         self.chars=chars
         
@@ -187,18 +194,19 @@ def process_doc(doc_name, strategies):
         else:
             return 0
     with PdfMinerWrapper(doc_name) as doc:
-        for page in doc:           
+        for page in doc:     
+            pg=Pg(page.pageid, page.height, page.width)      
             tbs= filter(lambda obj:isinstance(obj, LTTextBox), page)
             tbs.sort(cmp=compareBoxes)
             for tbox in tbs:
                 if tbox.get_text().strip():
-                    para = TextPara(tbox.get_text(), page.pageid, 
+                    para = TextPara(tbox.get_text(), page.pageid, pg,
                         _to_pct(tbox.x0, page.width), _to_pct(page.height-tbox.y0, page.height), 
                         tbox.bbox, tbox.height, tbox.width )
                     for s in strategies:
                         s.feed_para(para)
-                texts= filter(lambda t:t.text, map(lambda obj: TextLine(obj.get_text(), page.pageid, 
-                    _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), 
+                texts= filter(lambda t:t.text, map(lambda obj: TextLine(obj.get_text(), page.pageid,  
+                    pg, _to_pct(obj.x0, page.width), _to_pct(page.height-obj.y0, page.height), 
                     obj.bbox, obj.height, obj.width, filter(lambda c: c.get_text(),obj))
                     , tbox))
                 for t in texts:
