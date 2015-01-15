@@ -190,3 +190,7 @@ div.col {
 .login-form input[type="submit"] {
 margin-left:8.5em;
 }
+
+#name-version {
+    cursor:help;
+}

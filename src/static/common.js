@@ -9,8 +9,21 @@ function showHelp(evt) {
 		});
 		evt.stopPropagation();
 		evt.preventDefault();
-	}
+	};
 	
+	function showAbout(evt) {
+		
+		d=$('#dialog');
+		$.get('/static/about.html',
+				function (data) {
+			$('.dialog-content', d).html(data);
+			d.show();
+		});
+		evt.stopPropagation();
+		evt.preventDefault();
+	};
+	
+	$('#name-version').click(showAbout);
 	$('#content').on('click', '.check-help', showHelp);
 	
 	$('#dialog .close-btn').click(function(evt) {

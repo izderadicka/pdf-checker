@@ -177,6 +177,8 @@ def help_check(check_name):
             return json.jsonify(help=check[2])
     return json.jsonify(notFound=True, help=None)
 
+    
+
 if __name__ == "__main__":
     dbg=True
     if len(sys.argv)>1 and sys.argv[1]=='NO_DEBUG':

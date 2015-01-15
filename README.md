@@ -20,8 +20,10 @@ Install (on Debian Wheezy)
 --------------------------
 ```
 apt-get install build-essential python python-dev git python-pip uwsgi uwsgi-plugin-python nginx-full 
-#Below are dependencies for python-saml - for SSO integration - it's optional if you not using SSO
+#Below are dependencies for python-saml - for SSO integration - it's optional if you not using SSO, but must modify access.py
 apt-get install libxml2-dev libxslt1-dev libxmlsec1-dev swig
+#install python-saml from git to get latest version - there has been critical fix for logout on Jan 9th 2015
+
 cd /opt
 git clone https://github.com/izderadicka/pdf-checker.git checker
 cd checker
@@ -55,3 +57,6 @@ v0.2 - production version
 v.0.2.1 - small fixes, 
 
 v.0.3 - categories for checks - better UI
+
+v.0.3.3 -  SSO integration (SAML), stores results in DB,  couple of core checker changes to 
+enable new custome checks
