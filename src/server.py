@@ -54,6 +54,7 @@ if app.config.get('SQLALCHEMY_DATABASE_URI'):
         filename=db.Column(db.Unicode(200), nullable=False)
         doc_type=db.Column(db.String(20), nullable=False)
         checked_on=db.Column(db.DateTime(timezone=True), nullable=False)
+        tmp_filename=db.Column(db.Unicode(200), nullable=True)
         
     class Issue(db.Model):
         __tablename__='pdf_issue'
@@ -94,7 +95,7 @@ def is_pdf(f):
     ext=os.path.splitext(f.filename)[1]
     return ext.lower() == '.pdf'
 
-def record_result(fname,cat,res):
+def record_result(fname, tfile, cat,res):
     if current_user.is_authenticated():
         uname=current_user.id
     else:
@@ -104,7 +105,8 @@ def record_result(fname,cat,res):
     c=Check(username=uname, 
             filename=fname,
             doc_type=cat,
-            checked_on = datetime.now()
+            checked_on = datetime.now(),
+            tmp_filename=tfile
             )
     db.session.add(c)
     for check in checks:
@@ -141,7 +143,7 @@ def upload():
             resp.set_cookie('category', cat, max_age=315360000)
             if db and not err:
                 try:
-                    record_result(f.filename, cat, res)
+                    record_result(f.filename, tmp_file, cat, res)
                 except Exception,e:
                     app.logger.error('Error when recording results to db: %s',e)
                     import traceback;traceback.print_exc()
