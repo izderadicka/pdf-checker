@@ -194,3 +194,34 @@ margin-left:8.5em;
 #name-version {
     cursor:help;
 }
+
+.logo {
+    width: 128px;
+    height:150px;
+    float:left;
+    background: url('/static/img/logo.svg') no-repeat;
+    background-size: 128px 
+}
+
+.title {
+    font-size:48px;
+    font-weight:bold;
+    padding-top:25px
+    
+}
+
+.subtitle {
+    font-style: italic;
+    font-size: 18px
+}
+
+h1.home {
+    clear:both;
+    margin-top:2em !important;;    
+}
+
+.header {
+    height:160px;
+    
+    border-bottom: 1px solid lightgrey
+}

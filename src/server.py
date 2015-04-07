@@ -25,7 +25,8 @@ from flask import json
 
 
 def get_checks():
-    cl=[(p.name, p.categories if hasattr(p,'categories') else [], hasattr(p,'help') and p.help) for p in load_plugins()]
+    cl=[(p.name, p.categories if hasattr(p,'categories') else [], hasattr(p,'help') and p.help, 
+         hasattr(p, 'optional') and p.optional) for p in load_plugins()]
     #cl=[('A'+str(i), bool(i%2)) for i in xrange(13)]
     cl.sort(key=lambda x: x[0])
     cats = sorted(list(set(itertools.chain(*map(lambda c : c[1], cl)))))
@@ -86,7 +87,7 @@ def inject_version():
 @login_required
 def root():
     return render_template('home.html', checks=app.config['CHECKS'], 
-        cats2= [(c[0],c[1]) for c in app.config['CHECKS']],
+        cats2= [(c[0],c[1] if not c[3] else []) for c in app.config['CHECKS']],
         categories= app.config['CATEGORIES'],
         cat=request.cookies.get('category'))
     

@@ -11,6 +11,7 @@ class CheckStrategy(object):
         self.results=Result(self.name)
     name=""
     help=""
+    #optional = False #  can override on derived classes to make checks optional - e.g. must be selected manually
     def feed(self, line):
         pass
     def feed_para(self, para):
