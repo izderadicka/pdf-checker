@@ -183,6 +183,7 @@ class PdfMinerWrapper(object):
            
 def process_doc(doc_name, strategies):
     def compareBoxes(o1,o2):
+        #y0 is bottom horizontal edge of box, consider using y1 -e.g. top horizontal edge?
         if o1.y0>o2.y0:
             return -1
         elif o1.y0<o2.y0:
