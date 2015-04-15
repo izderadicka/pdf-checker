@@ -9,7 +9,12 @@ var checkCategories = {{cats2|tojson|safe}};
 </script>
 {%endblock%}
 {% block content %}
-<h1>Upload your PDF file</h1>
+<div class="header">
+<div class="logo"></div>
+<div class="title">PDF Checker</div>
+<div class="subtitle">One who never checks, later regrets</div>
+</div>
+<h1 class='home'>Upload your PDF file</h1>
 <div class="uploadForm">
  <form action="/upload" method="POST" enctype="multipart/form-data">
  <label class="form-label mandatory">Document: </label>

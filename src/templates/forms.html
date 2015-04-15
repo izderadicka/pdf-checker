@@ -1,11 +1,12 @@
 {%macro checks_widget(checks, cat, cols) -%}
 <div class="col">
-{% for name, categories,help in checks %}
+{% for name, categories,help,opt in checks %}
 <div class="cb_cell">
 <input  name="checks" id="check_cd_{{loop.index}}" type="checkbox" 
-value="{{name}}"{% if cat in categories %} checked="checked"{%endif%}/>
+value="{{name}}"{% if cat in categories and not opt %} checked="checked"{%endif%}/>
 <label for="check_cd_{{loop.index}}">{{name}}<span class="check-help" data-check-name="{{name}}"></span>
 {% if categories%} <div class="cats">(
+{%if opt%}OPTIONAL {%endif%}
 {% for c in categories %}{{c}}{%if not loop.last%}, {%endif%}{%endfor%}
 )</div>{%endif%}
 </label></div>
